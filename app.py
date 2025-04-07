@@ -26,19 +26,20 @@ if st.button("文字起こしを取得する") and url:
             st.success("以下の文字をそのままコピーして、ChatGPTに貼ってください👇")
             st.code(final_text, language='text')
 
-            # 自動で選択されるようにする（JSスクリプト）
-            st.markdown(
+            # 自動でテキストを選択するスクリプト
+            st.components.v1.html(
                 """
                 <script>
-                const textarea = window.parent.document.querySelector('textarea');
-                if (textarea) {
-                    textarea.focus();
-                    textarea.select();
-                }
+                    const textarea = window.parent.document.querySelector('textarea');
+                    if (textarea) {
+                        textarea.focus();
+                        textarea.select();
+                    }
                 </script>
                 """,
-                unsafe_allow_html=True
+                height=0
             )
+
         except Exception as e:
             st.error(f"文字起こしの取得中にエラーが発生しました：{e}")
     else:
