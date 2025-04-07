@@ -4,7 +4,7 @@ import openai
 import re
 import os
 
-openai.api_key = os.environ.get("OPENAI_API_KEY")
+client = openai.OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
 
 def extract_video_id(url):
     match = re.search(r"(?:v=|\/)([0-9A-Za-z_-]{11})", url)
@@ -15,8 +15,8 @@ def get_transcript(video_id):
     return " ".join([entry['text'] for entry in transcript])
 
 def summarize_text(text):
-    response = openai.ChatCompletion.create(
-        model="gpt-3.5-turbo",  # GPT-4でもOK（速度や料金次第）
+    response = client.chat.completions.create(
+        model="gpt-3.5-turbo",  # または "gpt-4"
         messages=[
             {"role": "system", "content": "以下のYouTube文字起こしを日本語で簡潔に要約してください。"},
             {"role": "user", "content": text}
